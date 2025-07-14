@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mi Malla Curricular</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    h1 {
+      text-align: center;
+    }
+    .materias {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .materia {
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .materia.aprobada {
+      background: #d4edda;
+      text-decoration: line-through;
+    }
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mi Malla Curricular</h1>
+  <div class="materias" id="materias">
+    <!-- Aquí se agregan las materias -->
+  </div>
+
+  <script>
+    const listaMaterias = [
+      "Matemática I",
+      "Física I",
+      "Química General",
+      "Historia",
+      "Lengua",
+      "Matemática II",
+      "Filosofía",
+      "Economía",
+      "Sociología",
+      "Psicología"
+    ];
+
+    const container = document.getElementById("materias");
+
+    // Cargar estado guardado en localStorage
+    const estadoGuardado = JSON.parse(localStorage.getItem("materiasAprobadas")) || {};
+
+    listaMaterias.forEach(materia => {
+      const div = document.createElement("div");
+      div.className = "materia";
+      if (estadoGuardado[materia]) {
+        div.classList.add("aprobada");
+      }
+
+      const nombre = document.createElement("span");
+      nombre.textContent = materia;
+
+      const boton = document.createElement("button");
+      boton.textContent = estadoGuardado[materia] ? "Desmarcar" : "Aprobar";
+
+      boton.onclick = () => {
+        div.classList.toggle("aprobada");
+        const aprobado = div.classList.contains("aprobada");
+        boton.textContent = aprobado ? "Desmarcar" : "Aprobar";
+        estadoGuardado[materia] = aprobado;
+        localStorage.setItem("materiasAprobadas", JSON.stringify(estadoGuardado));
+      };
+
+      div.appendChild(nombre);
+      div.appendChild(boton);
+      container.appendChild(div);
+    });
+  </script>
+</body>
+</html>
+Añadir index.html
