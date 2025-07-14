@@ -1,72 +1,69 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Mi Malla Curricular</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f0f0f0;
-    }
-    h1 {
-      text-align: center;
-    }
-    .materias {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-    .materia {
-      background: white;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .materia.aprobada {
-      background: #d4edda;
-      text-decoration: line-through;
-    }
-    button {
-      padding: 5px 10px;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <h1>Mi Malla Curricular</h1>
-  <div class="materias" id="materias">
-    <!-- Aquí se agregan las materias -->
-  </div>
-
-  <script>
-    const listaMaterias = [
-      "Matemática I",
-      "Física I",
-      "Química General",
-      "Historia",
-      "Lengua",
-      "Matemática II",
+<script>
+  const materiasPorAnio = {
+    "Primer Año": [
+      "Alfabetización Académica",
+      "Didáctica General",
+      "Aprender, Enseñar y Evaluar con TIC",
+      "Pedagogía",
+      "Lengua Inglesa I",
+      "Fonética y Fonología Inglesa con Práctica en Lab I",
+      "Gramática Inglesa I",
+      "Gramática Española",
+      "Práctica Docente I"
+    ],
+    "Segundo Año": [
+      "Psicología del Aprendizaje",
       "Filosofía",
-      "Economía",
-      "Sociología",
-      "Psicología"
-    ];
+      "Sociología de la Educación",
+      "Ética y Ciudadanía",
+      "Lengua Inglesa II",
+      "Fonética y Fonología Inglesa con Práctica en Lab II",
+      "Gramática Inglesa II",
+      "Didáctica Especial I",
+      "Suejeto de la Educación I",
+      "Práctica Docente II"
+    ],
+    "Tercer Año": [
+      "Enseñanza para la Inclusión",
+      "Análisis de las Realidades Socioculturales de Formosa",
+      "Educación Sexual Integral",
+      "Historia y Política de la Educación Argentina",
+      "Lengua Inglesa III",
+      "Dicción de la Lengua Inglesa",
+      "Sociedad y Cultura de los Pueblos de habla Inglesa",
+      "Gramática Contrastiva Inglés-Español",
+      "Didáctica Especial II",
+      "Sujeto de la Educación II",
+      "Práctica Docente III y Residencia Profesional I"
+    ],
+    "Cuarto Año": [
+      "Espacio de Definición Institucional",
+      "Gestión y Organización Escolar",
+      "Lengua Inglesa IV",
+      "Literatura de los Pueblos de Habla Inglesa",
+      "Lingüística General y Aplicada",
+      "Práctica Docente IV y Residencia Profesional II"
+    ]
+  };
 
-    const container = document.getElementById("materias");
+  const container = document.getElementById("materias");
+  const estadoGuardado = JSON.parse(localStorage.getItem("materiasAprobadas")) || {};
 
-    // Cargar estado guardado en localStorage
-    const estadoGuardado = JSON.parse(localStorage.getItem("materiasAprobadas")) || {};
+  Object.keys(materiasPorAnio).forEach(anio => {
+    const titulo = document.createElement("h2");
+    titulo.textContent = anio;
+    container.appendChild(titulo);
 
-    listaMaterias.forEach(materia => {
+    const grid = document.createElement("div");
+    grid.style.display = "grid";
+    grid.style.gridTemplateColumns = "repeat(auto-fill, minmax(200px, 1fr))";
+    grid.style.gap = "15px";
+    grid.style.marginBottom = "30px";
+
+    materiasPorAnio[anio].forEach(materia => {
       const div = document.createElement("div");
-      div.className = "materia";
+      // Añadir clase base + clase por año
+      div.className = "materia " + anio.toLowerCase().replace(/ /g, "-");
       if (estadoGuardado[materia]) {
         div.classList.add("aprobada");
       }
@@ -87,9 +84,9 @@
 
       div.appendChild(nombre);
       div.appendChild(boton);
-      container.appendChild(div);
+      grid.appendChild(div);
     });
-  </script>
-</body>
-</html>
-Añadir index.html
+
+    container.appendChild(grid);
+  });
+</script>
